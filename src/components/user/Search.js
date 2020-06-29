@@ -11,7 +11,8 @@ class Search extends Component {
 
   onSubmit = (e) => {
     e.preventDefault();
-    console.log(this.state.text);
+    this.props.searchUsers(this.state.text);
+    this.setState({ text: "" });
   };
 
   render() {
@@ -31,6 +32,13 @@ class Search extends Component {
             value='Search'
           />
         </form>
+        {this.props.hasUsers && (
+          <button
+            className='btn btn-block btn-light'
+            onClick={this.props.clearUsers}>
+            Clear
+          </button>
+        )}
       </div>
     );
   }
