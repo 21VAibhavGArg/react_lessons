@@ -5,11 +5,13 @@ import Navbar from "./components/layout/Navbar";
 import Users from "./components/user/Users";
 import Search from "./components/user/Search";
 import PropTypes from "prop-types";
+import Alert from "./components/layout/Alert";
 
 class App extends Component {
   state = {
     users: [],
     loading: false,
+    alert: null,
   };
 
   // async componentDidMount() {
@@ -38,16 +40,25 @@ class App extends Component {
     this.setState({ users: [], loading: false });
   };
 
+  setAlert = (msg, type) => {
+    this.setState({ alert: { msg, type } });
+    setTimeout(() => {
+      this.setState({ alert: null });
+    }, 5000);
+  };
+
   render() {
     const { users, loading } = this.state;
     return (
       <div className='App'>
         <Navbar />
         <div className='container'>
+          <Alert alert={this.state.alert} />
           <Search
             searchUsers={this.searchUsers}
             clearUsers={this.clearUsers}
             hasUsers={users.length > 0}
+            setAlert={this.setAlert}
           />
           <Users users={users} loading={loading} />
         </div>
