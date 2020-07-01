@@ -1,4 +1,5 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "./App.css";
 import axios from "axios";
 import Navbar from "./components/layout/Navbar";
@@ -6,6 +7,7 @@ import Users from "./components/user/Users";
 import Search from "./components/user/Search";
 import PropTypes from "prop-types";
 import Alert from "./components/layout/Alert";
+import { About } from "./components/pages/About";
 
 class App extends Component {
   state = {
@@ -50,19 +52,45 @@ class App extends Component {
   render() {
     const { users, loading } = this.state;
     return (
-      <div className='App'>
-        <Navbar />
-        <div className='container'>
-          <Alert alert={this.state.alert} />
-          <Search
-            searchUsers={this.searchUsers}
-            clearUsers={this.clearUsers}
-            hasUsers={users.length > 0}
-            setAlert={this.setAlert}
-          />
-          <Users users={users} loading={loading} />
+      <Router>
+        <div className='App'>
+          <Navbar />
+          <div className='container'>
+            <Alert alert={this.state.alert} />
+            <Switch>
+              <Route
+                exact
+                path='/'
+                render={(props) => {
+                  return (
+                    <Fragment>
+                      <Search
+                        searchUsers={this.searchUsers}
+                        clearUsers={this.clearUsers}
+                        hasUsers={users.length > 0}
+                        setAlert={this.setAlert}
+                      />
+                      <Users users={users} loading={loading} />
+                    </Fragment>
+                  );
+                }}
+              />
+              <Route
+                exact
+                path='/about'
+                // render={(props) => {
+                //   return (
+                //     <Fragment>
+                //       <About />
+                //     </Fragment>
+                //   );
+                // }}
+                component={About}
+              />
+            </Switch>
+          </div>
         </div>
-      </div>
+      </Router>
     );
   }
 }
